@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ehtmltopdf
 
 Erlang wrapper for converting HTML to PDF.
@@ -33,10 +32,5 @@ to have 6 concurrent workers leads to about 4 operations per second. In both
 cases the Ops/sec tends slowly upwards.
 
 ## License
-The KIVRA ehtmltopdf library uses an [MIT license](http://en.wikipedia.org/wiki/MIT_License). So go ahead and do what you want!
-=======
-ehtmltopdf
-==========
 
-Erlang wrapper for converting HTML to PDF
->>>>>>> 3c35463... Initial commit
+The KIVRA ehtmltopdf library uses an [MIT license](http://en.wikipedia.org/wiki/MIT_License). So go ahead and do what you want!
