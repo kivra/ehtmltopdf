@@ -18,6 +18,9 @@
 
 -export([convert/2, test/0]).
 
+%% wkhtmltopdf doesn't seem to work until stdin is closed. Since Erlang ports
+%% can't close the pipe, we use the 'wrapper' script to close stdin to wkh..
+%% when this token is seen. Not elegant but works and fast enough for now.
 -define(EOF,
         "erlang-port-eof-kh9823rheifn8hn398hc3489c4hc489crn3983c238cbb39c").
 

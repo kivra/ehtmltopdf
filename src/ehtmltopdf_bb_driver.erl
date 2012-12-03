@@ -9,5 +9,5 @@ new(_) ->
     {ok, _HTML} = file:read_file(PrivDir++"/example.html").
 
 run(convert, _KeyGen, _ValueGen, HTML) ->
-    {ok, _PDF} = ehtmltopdf:convert(HTML),
+    {ok, _PDF} = ehtmltopdf:convert(HTML, []),
     {ok, HTML}.
