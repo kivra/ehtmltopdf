@@ -1,4 +1,5 @@
--module(ehtmltopdf).
+%%-------------------------------------------------------------------
+%% @doc Provides HTML to PDF conversion.
 %%
 %% Brokenness: at the time of writing, webkit doesn't support page-break-before,
 %%   page-break-after or page-break-inside for inline elements so use block
@@ -15,8 +16,11 @@
 %% obvious but not immediately to me :)
 %%
 %% The version of wkhtmltopdf used right now is "wkhtmltopdf 0.10.0 rc2"
+%%% @end
+%%-------------------------------------------------------------------
+-module(ehtmltopdf).
 
--export([convert/2, test/0]).
+-export([convert/2]).
 
 %% wkhtmltopdf doesn't seem to work until stdin is closed. Since Erlang ports
 %% can't close the pipe, we use the 'wrapper' script to close stdin to wkh..
@@ -24,6 +28,11 @@
 -define(EOF,
         "erlang-port-eof-kh9823rheifn8hn398hc3489c4hc489crn3983c238cbb39c").
 
+%% @doc Converts the HTML to PDF and returns the PDF as a binary.
+%% Supported options are: ```print_media'''
+%% 'print_media' implies using the print media type for CSS instead of
+%% the screen media type. The screen media type is the default.
+-spec convert(iodata(), list()) -> {ok, binary()}.
 convert(HTML, Opts) ->
     PrintOpt = lists:member(print_media, Opts),
     PrintOptStr = if
@@ -54,13 +63,3 @@ receive_until_exit(Port, ReverseBuffer) ->
         {Port, {data, Data}} ->
             receive_until_exit(Port, [Data | ReverseBuffer])
     end.
-
-test() ->
-    HTML =
-        "<html><body>"
-        "<h1>hello</h1>world"
-        "<div style=\"page-break-before: always;\">on next page</div>blah"
-        "</body></html>",
-    {ok, PDF} = convert(HTML, []),
-    file:write_file("test.html", HTML),
-    file:write_file("test.pdf", PDF).
