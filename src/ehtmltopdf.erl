@@ -56,10 +56,13 @@
 -spec convert(iodata(), list()) -> {ok, binary()}.
 convert(HTML, Opts) ->
     PrintOpt = lists:member(print_media, Opts),
-    PrintOptStr = if
-                      PrintOpt -> "--print-media-type";
-                      true -> ""
-                  end,
+    PrintOptStr =
+        if
+            PrintOpt ->
+                "--print-media-type";
+            true ->
+                ""
+        end,
     %% Wrap in quotes so wkhtmltopdf's args is exactly one arg to wrapper.
     WHTPOptStr = string:join(["\"", PrintOptStr, "\""], " "),
     {ok, WHTPPath} = application:get_env(ehtmltopdf, wkhtmltopdf_path),
@@ -71,8 +74,10 @@ convert(HTML, Opts) ->
     %% crash upon non-zero exit status
     {ok, Data, 0} = receive_until_exit(Port, []),
     case erlang:port_info(Port) of
-        undefined -> ok;
-        _ -> true = erlang:port_close(Port)
+        undefined ->
+            ok;
+        _ ->
+            true = erlang:port_close(Port)
     end,
     {ok, Data}.
 
