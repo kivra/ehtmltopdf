@@ -1,0 +1,16 @@
+%% -*- mode: erlang -*-
+{application, ehtmltopdf,
+ [
+  {description, "Wrapper around an external HTML to PDF conversion program"},
+  {vsn, git},
+  {modules, ehtmltopdf},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env,
+   [
+    {wkhtmltopdf_path, "wkhtmltopdf"}
+   ]}
+ ]}.

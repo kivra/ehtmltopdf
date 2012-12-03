@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#
+# Erlang can't close the stdin pipe of its subprocesses but wkhtmltopdf
+# won't return the PDF until the pipe is closed so wrap wkhtmltopdf in this.
+# From Erlang, the the HTML is output, followed by a newline and the
+# (probably) unique EOF marker. This script buffers the HTML until
+# it sees this EOF marker, then runs wkhtmltopdf.
+#
+# Pipes are used to avoid having to clean up temporary files that may
+# not be dealt with easily when things go wrong.
+
+EOF=erlang-port-eof-kh9823rheifn8hn398hc3489c4hc489crn3983c238cbb39c
+while read LINE; do
+    if [[ ! -z $LINE ]]
+    then
+        if [[ $LINE == $EOF ]]
+        then
+            echo $DATA | $1 -q $2 - -
+            exit $?
+        else
+            DATA=${DATA}${LINE}
+        fi
+    fi
+done
